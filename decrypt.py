@@ -18,23 +18,30 @@ for x in fileList:
 	hash = x.split('.')
 	name = ""
 	#print hash
-
 	for i in hash:
-		if unicode(i).isnumeric() == False:
-			num = ""
-			j = len(i)-1
-			while j>0:
-				if unicode(i[j]).isnumeric() == False:
-					break
-				else:
-					num = i[j] + num
-				j-=1
-			if num:
-				name+=chr(int(num))
-		elif unicode(i).isnumeric() == True:
-			name+=chr(int(i))
+		try:
+			#print i
+			#i = i.encode('utf-8')
+			i = i.encode('ascii','ignore')
+			if unicode(i).isnumeric() == False:
+				num = ""
+				j = len(i)-1
+				while j>0:
+					if unicode(i[j]).isnumeric() == False:
+						break
+					else:
+						num = i[j] + num
+					j-=1
+				if num:
+
+					name+=chr(int(num))
+			elif unicode(i).isnumeric() == True:
+				name+=chr(int(i))
+		except:
+			print "Corrupt File : %s" %(i)
 	try:
+		#print "Renaming %s:%s" %(x,name)
 		os.rename(x,name)
-		print "Renamed %s:%s" %(x,name)
+		#print "Renamed %s:%s" %(x,name)
 	except:
 		print "Error Occurred at %s : %s" %(x,name)
